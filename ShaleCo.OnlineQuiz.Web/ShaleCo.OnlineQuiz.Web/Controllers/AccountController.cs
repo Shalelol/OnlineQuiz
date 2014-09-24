@@ -123,6 +123,8 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."
+                : message == ManageMessageId.UserNameExists ? "A user with that name already exists"
+                : message == ManageMessageId.AccountCreated ? "Account created successfully."
                 : "";
             ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
@@ -178,6 +180,31 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateUser(CreateUserViewModel model)
+        {
+            if(UserManager.FindByName(model.UserName) != null)
+            {
+                return RedirectToAction("Manage", new { Message = ManageMessageId.UserNameExists });
+            }
+            else
+            {
+                var result = this.UserManager.Create(new ApplicationUser() { UserName = model.UserName }, model.Password);
+                var user = this.UserManager.FindByName(model.UserName);
+                var createRole = User.IsInRole(UserRoles.Admin.ToString()) ? UserRoles.Teacher : UserRoles.Student;
+                this.UserManager.AddToRole(user.Id, createRole.ToString());
+                if(result.Succeeded)
+                {
+                    return RedirectToAction("Manage", new { Message = ManageMessageId.AccountCreated });
+                }
+
+                AddErrors(result);
+            }
+
+            return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
         }
 
         //
@@ -361,6 +388,8 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
             ChangePasswordSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,
+            UserNameExists,
+            AccountCreated,
             Error
         }
 

@@ -17,12 +17,13 @@
         {
             @Html.Partial("_SetPasswordPartial")
         }
-
-        <section id="externalLogins">
-            @Html.Action("RemoveAccountList")
-            @Html.Partial("_ExternalLoginsListPartial", new { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
-        </section>
     </div>
+    @if (User.IsInRole(UserRoles.Admin.ToString()) || User.IsInRole(UserRoles.Teacher.ToString()))
+    {
+        <div class="col-md-12">
+            @Html.Partial("_CreateUser")
+        </div>
+    }
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

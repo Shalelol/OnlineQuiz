@@ -45,6 +45,8 @@ namespace ShaleCo.OnlineQuiz.Web
             if(userManager.FindByName(adminUserName) == null)
             {
                 userManager.Create(new ApplicationUser() { UserName = adminUserName }, adminPassword);
+                var user = userManager.FindByName(adminUserName);
+                userManager.AddToRole(user.Id, UserRoles.Admin.ToString());
             }
 
             database.SaveChanges();
