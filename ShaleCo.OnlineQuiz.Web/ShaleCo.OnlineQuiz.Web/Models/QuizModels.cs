@@ -33,6 +33,7 @@ namespace ShaleCo.OnlineQuiz.Web.Models
         [Key]
         public int QuizID { get; set; }
         public string TeacherName { get; set; }
+        public string QuizName { get; set; }
         public virtual ICollection<Question> Questions { get; set; }
     }
 

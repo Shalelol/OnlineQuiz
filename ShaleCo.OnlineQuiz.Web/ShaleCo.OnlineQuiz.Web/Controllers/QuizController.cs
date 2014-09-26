@@ -54,5 +54,11 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Create(Quiz quiz)
+        {
+            return View();
+        }
 	}
 }
