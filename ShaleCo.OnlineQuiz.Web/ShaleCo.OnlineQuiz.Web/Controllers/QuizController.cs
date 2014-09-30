@@ -1,4 +1,6 @@
-﻿using ShaleCo.OnlineQuiz.Web.Models;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using ShaleCo.OnlineQuiz.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,47 +9,41 @@ using System.Web.Mvc;
 
 namespace ShaleCo.OnlineQuiz.Web.Controllers
 {
+    [Authorize]
     public class QuizController : Controller
     {
         private QuizDbContext _context = new QuizDbContext();
+        private UserManager<ApplicationUser> _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
-        //
-        // GET: /Quiz/
         public ActionResult Index()
         {
-            if (false)
+            string teacherName = "";
+            if (User.IsInRole(UserRoles.Teacher.ToString()))
             {
-                var quiz = new Quiz();
-                quiz.TeacherName = User.Identity.Name;
-
-                var question = new Question();
-                question.Text = "What is 2 + 2?";
-
-                var answer1 = new Answer();
-                answer1.Text = "5";
-
-                var answer2 = new Answer();
-                answer2.Text = "4";
-
-                var answer3 = new Answer();
-                answer3.Text = "1,000,000";
-
-                var answer4 = new Answer();
-                answer4.Text = "15";
-
-                question.Answers.Add(answer1);
-                question.Answers.Add(answer3);
-                question.Answers.Add(answer4);
-                question.CorrectAnswer = answer2;
-
-                quiz.Questions.Add(question);
-
-                _context.Quizzes.Add(quiz);
-
-                _context.SaveChanges();
+                teacherName = User.Identity.Name;
+            }
+            else if (User.IsInRole(UserRoles.Student.ToString()))
+            {
+                teacherName = _userManager.FindByName(User.Identity.Name).Teacher;
             }
 
-            return View();
+            var quizzes = _context.Quizzes.Where(e => e.TeacherName == teacherName).ToList();
+
+            var model = new QuizViewModel.ListViewModel();
+
+            foreach(var quiz in quizzes)
+            {
+                model.Quizzes.Add(this.MapQuiz(quiz));
+            }
+
+            return View(model);
+        }
+
+        public ActionResult Attempt(int id)
+        {
+            var quiz = _context.Quizzes.First(e => e.QuizID == id);
+
+            return View(quiz);
         }
 
         public ActionResult Create()
@@ -59,6 +55,9 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
         public ActionResult Create(QuizViewModel.Quiz data)
         {
             var quiz = this.MapQuiz(data);
+            _context.Quizzes.Add(quiz);
+            _context.SaveChanges();
+
             return View();
         }
 
@@ -77,6 +76,28 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
                 foreach(var incorrectData in questionData.IncorrectAnswers)
                 {
                     question.Answers.Add(new Answer() { Text = incorrectData });
+                }
+
+                quiz.Questions.Add(question);
+            }
+
+            return quiz;
+        }
+
+        private QuizViewModel.Quiz MapQuiz(Quiz data)
+        {
+            var quiz = new QuizViewModel.Quiz();
+            quiz.QuizName = data.QuizName;
+            
+            foreach(var questionData in data.Questions)
+            {
+                var question = new QuizViewModel.Question();
+                question.Text = questionData.Text;
+                question.CorrectAnswer = questionData.CorrectAnswer.Text;
+
+                foreach(var incorrectData in questionData.Answers)
+                {
+                    question.IncorrectAnswers.Add(incorrectData.Text);
                 }
 
                 quiz.Questions.Add(question);

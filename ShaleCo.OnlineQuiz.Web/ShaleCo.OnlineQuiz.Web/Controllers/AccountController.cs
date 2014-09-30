@@ -184,7 +184,7 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateUser(CreateUserViewModel model)
+        public ActionResult CreateUser(CreateUserViewModel model)
         {
             if(UserManager.FindByName(model.UserName) != null)
             {
@@ -192,7 +192,12 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
             }
             else
             {
-                var result = this.UserManager.Create(new ApplicationUser() { UserName = model.UserName }, model.Password);
+                var applicationUser = new ApplicationUser() { UserName = model.UserName };
+                if (User.IsInRole(UserRoles.Teacher.ToString()))
+                {
+                    applicationUser.Teacher = User.Identity.Name;
+                }
+                var result = this.UserManager.Create(applicationUser, model.Password);
                 var user = this.UserManager.FindByName(model.UserName);
                 var createRole = User.IsInRole(UserRoles.Admin.ToString()) ? UserRoles.Teacher : UserRoles.Student;
                 this.UserManager.AddToRole(user.Id, createRole.ToString());

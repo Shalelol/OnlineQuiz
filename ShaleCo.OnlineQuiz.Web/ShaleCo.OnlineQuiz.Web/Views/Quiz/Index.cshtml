@@ -1,7 +1,13 @@
-﻿
+﻿@model ShaleCo.OnlineQuiz.Web.Models.QuizViewModel.ListViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "List";
 }
 
-<h2>Index</h2>
+<h2>Quizzes</h2>
 
+
+
+@foreach(var quiz in Model.Quizzes)
+{
+    <div>@Html.ActionLink(quiz.QuizName, "Attempt", new { id = quiz.QuizID }, null)</div>
+}
