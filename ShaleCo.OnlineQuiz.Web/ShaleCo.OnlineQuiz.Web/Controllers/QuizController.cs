@@ -56,9 +56,33 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Quiz quiz)
+        public ActionResult Create(QuizViewModel.Quiz data)
         {
+            var quiz = this.MapQuiz(data);
             return View();
+        }
+
+        private Quiz MapQuiz(QuizViewModel.Quiz data)
+        {
+            var quiz = new Quiz();
+            quiz.QuizName = data.QuizName;
+            quiz.TeacherName = User.Identity.Name;
+
+            foreach(var questionData in data.Questions)
+            {
+                var question = new Question();
+                question.Text = questionData.Text;
+                question.CorrectAnswer = new Answer() { Text = questionData.CorrectAnswer };
+
+                foreach(var incorrectData in questionData.IncorrectAnswers)
+                {
+                    question.Answers.Add(new Answer() { Text = incorrectData });
+                }
+
+                quiz.Questions.Add(question);
+            }
+
+            return quiz;
         }
 	}
 }
