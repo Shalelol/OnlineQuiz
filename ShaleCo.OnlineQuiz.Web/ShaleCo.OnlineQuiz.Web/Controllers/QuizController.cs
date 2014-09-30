@@ -46,6 +46,12 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
             return View(quiz);
         }
 
+        [HttpPost]
+        public ActionResult Attempt(QuizViewModel.QuizAnswers data)
+        {
+            throw new NotImplementedException();
+        }
+
         public ActionResult Create()
         {
             return View();

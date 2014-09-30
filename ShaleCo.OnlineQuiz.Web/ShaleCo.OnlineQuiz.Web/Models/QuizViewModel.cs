@@ -39,5 +39,22 @@ namespace ShaleCo.OnlineQuiz.Web.Models
             public string CorrectAnswer { get; set; }
             public IList<string> IncorrectAnswers { get; set; }
         }
+
+        public class QuizAnswers
+        {
+            public QuizAnswers()
+            {
+                this.Answers = new List<QuestionAnswer>();
+            }
+
+            public int QuizID { get; set; }
+            public IList<QuestionAnswer> Answers { get; set; }
+        }
+
+        public class QuestionAnswer
+        {
+            public int QuestionID { get; set; }
+            public int AnswerID { get; set; }
+        }
     }
 }

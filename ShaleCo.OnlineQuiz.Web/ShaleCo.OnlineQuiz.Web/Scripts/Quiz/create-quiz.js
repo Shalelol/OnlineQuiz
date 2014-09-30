@@ -87,9 +87,7 @@ OnlineQuiz.CreateQuiz = OnlineQuiz.CreateQuiz || function () {
                 quiz.Questions.push(question);
             });
             console.log(quiz);
-            //$.post("/Quiz/Create", JSON.stringify(quiz), function () {
-            //    console.log(arguments);
-            //}, "application/json");
+
             $.ajax({
                 url: "/Quiz/Create",
                 type: "POST",
