@@ -24,6 +24,7 @@ namespace ShaleCo.OnlineQuiz.Web.Models
                 this.Questions = new List<Question>();
             }
 
+            public int QuizID { get; set; }
             public string QuizName { get; set; }
             public IList<Question> Questions { get; set; }
         }
@@ -55,6 +56,13 @@ namespace ShaleCo.OnlineQuiz.Web.Models
         {
             public int QuestionID { get; set; }
             public int AnswerID { get; set; }
+        }
+
+        public class QuizResults
+        {
+            public int Score { get; set; }
+            public Quiz Quiz { get; set; }
+            public QuizAnswers QuizAttempt { get; set; }
         }
     }
 }

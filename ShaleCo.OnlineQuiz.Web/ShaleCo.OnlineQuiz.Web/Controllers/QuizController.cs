@@ -49,7 +49,37 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
         [HttpPost]
         public ActionResult Attempt(QuizViewModel.QuizAnswers data)
         {
-            throw new NotImplementedException();
+            var quiz = _context.Quizzes.First(e => e.QuizID == data.QuizID);
+            var quizAttempt = new QuizAttempt();
+            quizAttempt.QuizID = quiz.QuizID;
+            quizAttempt.StudentName = User.Identity.Name;
+            
+            foreach(var answer in data.Answers)
+            {
+                var quizAnswer = new QuizAnswer();
+                quizAnswer.QuestionID = answer.QuestionID;
+                quizAnswer.AnswerID = answer.AnswerID;
+
+                quizAttempt.Answers.Add(quizAnswer);
+            }
+
+            _context.QuizAttempts.Add(quizAttempt);
+            _context.SaveChanges();
+
+            return null;
+        }
+
+        public ActionResult Results(int id)
+        {
+            var quiz = _context.Quizzes.First(e => e.QuizID == id);
+            var quizAttempt = _context.QuizAttempts.FirstOrDefault(e => e.QuizID == id && e.StudentName == User.Identity.Name);
+
+            var resultsViewModel = new QuizViewModel.QuizResults();
+            resultsViewModel.Score = this.Score(quiz, quizAttempt);
+            resultsViewModel.Quiz = this.MapQuiz(quiz);
+            resultsViewModel.QuizAttempt = this.MapQuizAttempt(quizAttempt);
+
+            return View(resultsViewModel);
         }
 
         public ActionResult Create()
@@ -94,6 +124,7 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
         {
             var quiz = new QuizViewModel.Quiz();
             quiz.QuizName = data.QuizName;
+            quiz.QuizID = data.QuizID;
             
             foreach(var questionData in data.Questions)
             {
@@ -110,6 +141,37 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
             }
 
             return quiz;
+        }
+
+        private QuizViewModel.QuizAnswers MapQuizAttempt(QuizAttempt data)
+        {
+            var quizAnswers = new QuizViewModel.QuizAnswers();
+            quizAnswers.QuizID = data.QuizID;
+            
+            foreach(var answer in data.Answers)
+            {
+                var questionAnswer = new QuizViewModel.QuestionAnswer();
+                questionAnswer.AnswerID = (int) answer.AnswerID;
+                questionAnswer.QuestionID = (int) answer.QuestionID;
+                quizAnswers.Answers.Add(questionAnswer);
+            }
+
+            return quizAnswers;
+        }
+
+        private int Score(Quiz quiz, QuizAttempt quizAttempt)
+        {
+            var correct = 0;
+
+            foreach(var answer in quizAttempt.Answers)
+            {
+                if(quiz.Questions.First(e => e.QuestionID == answer.QuestionID).CorrectAnswer.AnswerID == answer.AnswerID)
+                {
+                    correct++;
+                }
+            }
+
+            return correct;
         }
 	}
 }

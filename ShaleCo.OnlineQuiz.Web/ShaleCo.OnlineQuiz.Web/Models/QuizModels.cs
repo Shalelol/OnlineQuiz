@@ -64,6 +64,11 @@ namespace ShaleCo.OnlineQuiz.Web.Models
     [Table("QuizAttempts")]
     public class QuizAttempt
     {
+        public QuizAttempt()
+        {
+            this.Answers = new List<QuizAnswer>();
+        }
+
         [Key]
         public int QuizAttemptID { get; set; }
         public string StudentName { get; set; }

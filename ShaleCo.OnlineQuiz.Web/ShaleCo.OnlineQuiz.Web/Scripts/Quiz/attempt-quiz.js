@@ -22,7 +22,9 @@ OnlineQuiz.QuizAttempt = OnlineQuiz.QuizAttempt || function () {
                 type: "POST",
                 data: JSON.stringify(quizAnswers),
                 contentType: "application/json",
-                dataType: "json"
+                success: function (data) {
+                    window.location.pathname = "/Quiz/Results/" + quizAnswers.QuizID;
+                }
             });
         });
     };
