@@ -9,7 +9,7 @@
                 <h1>Online Quiz</h1>
                 <p><strong>A place for teachers to easily examine their students. A place for students to progress their learning.</strong></p>
                 <p>
-                    <a class="btn btn-primary">Learn more</a>
+                    <a class="btn btn-primary" href="/Home/About/">Learn more</a>
                 </p>
             </div>
         </div>
@@ -18,16 +18,27 @@
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            Visit the Quiz page to view the quizzes available for you to take or to create a new quiz if you are a teacher.
-        </p>
-        <p><a class="btn btn-default" href="/Quiz/">Quizzes &raquo;</a></p>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <h2>Getting started</h2>
+            <p>
+                Visit the Quiz page to view the quizzes available for you to take or to create a new quiz if you are a teacher.
+            </p>
+            <p><a class="btn btn-default" href="/Quiz/">Quizzes &raquo;</a></p>
+        }
+        else
+        {
+            <h2>Log In</h2>
+            <p>
+                Before you can get started you must log in. If you do not yet have an account you must contact either your teacher or a system administrator.
+            </p>
+            <p><a class="btn btn-default" href="/Account/Login">Log in &raquo;</a></p>
+        }
     </div>
     <div class="col-md-4">
         <h2>Get help</h2>
-        <p>Need help getting started with creating or taking a quiz? Visit our help page for a quick breakdown on how to use this website.</p>
-        <p><a class="btn btn-default">Help page &raquo;</a></p>
+        <p>Need help with creating or taking a quiz? Visit our help page for a quick breakdown on how to use this website.</p>
+        <p><a href="/Home/Help" class="btn btn-default">Help page &raquo;</a></p>
     </div>
     <div class="col-md-4">
         <h2>Learn About Us</h2>

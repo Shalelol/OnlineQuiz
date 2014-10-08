@@ -20,7 +20,7 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Help()
         {
             ViewBag.Message = "Your contact page.";
 

@@ -86,14 +86,15 @@ OnlineQuiz.CreateQuiz = OnlineQuiz.CreateQuiz || function () {
                 });
                 quiz.Questions.push(question);
             });
-            console.log(quiz);
 
             $.ajax({
                 url: "/Quiz/Create",
                 type: "POST",
                 data: JSON.stringify(quiz),
                 contentType: "application/json",
-                dataType: "json"
+                success: function (data) {
+                    window.location.pathname = "/Quiz/";
+                }
             });
         });
     };

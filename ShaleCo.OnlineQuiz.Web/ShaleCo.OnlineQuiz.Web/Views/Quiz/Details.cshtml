@@ -5,21 +5,29 @@
 
 <h2>Details</h2>
 <p>Details for quiz <strong>@Model.Quiz.QuizName</strong></p>
-<p>Average score is @Model.Average out of @Model.Quiz.Questions.Count</p>
-<div class="row">
-    <div class="col-lg-4">
-        <div class="list-group">
-            @foreach (var attempt in @Model.Scores)
-            {
-                var percentage = Math.Round(attempt.Score / (double)Model.Quiz.Questions.Count * 100, 2);
-                
-                <a class="list-group-item">
-                    <h4 class="list-group-item-heading">@attempt.StudentName</h4>
-                    <p class="list-group-item-text">
-                        @attempt.Score out of @Model.Quiz.Questions.Count - <span>@percentage</span>%
-                    </p>
-                </a>
-            }
+
+@if (Model.Scores.Count > 0)
+{
+    <p>Average score is @Model.Average out of @Model.Quiz.Questions.Count</p>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="list-group">
+                @foreach (var attempt in @Model.Scores)
+                {
+                    var percentage = Math.Round(attempt.Score / (double)Model.Quiz.Questions.Count * 100, 2);
+    
+                    <a class="list-group-item">
+                        <h4 class="list-group-item-heading">@attempt.StudentName</h4>
+                        <p class="list-group-item-text">
+                            @attempt.Score out of @Model.Quiz.Questions.Count - <span>@percentage</span>%
+                        </p>
+                    </a>
+                }
+            </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <p class="text-muted">No students have taken this quiz as of yet.</p>
+}

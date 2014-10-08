@@ -41,6 +41,13 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
 
         public ActionResult Attempt(int id)
         {
+            var attempt = _context.QuizAttempts.FirstOrDefault(e => e.StudentName == User.Identity.Name);
+
+            if(attempt != null)
+            {
+                return RedirectToAction("Results", new { id = id });
+            }
+
             var quiz = _context.Quizzes.First(e => e.QuizID == id);
 
             return View(quiz);
@@ -112,7 +119,7 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
             _context.Quizzes.Add(quiz);
             _context.SaveChanges();
 
-            return View();
+            return null;
         }
 
         private Quiz MapQuiz(QuizViewModel.Quiz data)
