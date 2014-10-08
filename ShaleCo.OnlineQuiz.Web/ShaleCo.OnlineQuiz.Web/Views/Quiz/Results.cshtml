@@ -3,5 +3,67 @@
     ViewBag.Title = "Results";
 }
 
-<h2>Results</h2>
+<h2>Quiz Results</h2>
+
+<strong><span>@User.Identity.Name</span>'s</strong> results for the quiz <strong>@Model.QuizAttempt.Quiz.QuizName</strong>
+
+<div class="row">
+    <div class="col-lg-4">
+        @Model.Score out of @Model.QuizAttempt.Quiz.Questions.Count
+    </div>
+    <div class="col-lg-4">
+        @{
+            double percentage = Model.Score / (double)Model.QuizAttempt.Quiz.Questions.Count;
+            percentage = Math.Round(percentage * 100, 2);
+        }
+        @if (percentage >= 50)
+        {
+            <p class="text-success">
+                <span>@percentage</span>%
+            </p>
+        }
+        else
+        {
+            <p class="text-danger">
+                <span>@percentage</span>%
+            </p>
+        }
+    </div>
+</div>
+
+<h3>Your Answers</h3>
+<div class="row">
+    @{var count = 1;}
+    @foreach (var answer in Model.QuizAttempt.Answers)
+    {
+        <div class="col-lg-2">
+            <p><strong>Question @count</strong></p>
+        </div>
+        <div class="col-lg-10">
+            <p>@answer.Question.Text</p>
+        </div>
+        <div class="col-lg-2">
+            <p class="text-muted">
+               Your answer
+            </p>
+        </div>
+        <div class="col-lg-10">
+            @if (answer.AnswerID == answer.Question.CorrectAnswer.AnswerID)
+            {
+                <p class="text-success">
+                    @answer.Answer.Text
+                </p>
+            }
+            else
+            {
+                <p class="text-danger">
+                    @answer.Answer.Text
+                </p>
+            }
+        </div>
+
+
+            count++;
+    }
+</div>
 

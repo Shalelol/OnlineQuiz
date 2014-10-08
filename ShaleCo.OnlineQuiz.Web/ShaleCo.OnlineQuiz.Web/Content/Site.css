@@ -40,3 +40,13 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+.splash {
+    height: 25em;
+    padding-top: 5em;
+    margin-bottom: 2em;
+    background-image: url("http://i.imgur.com/gGliEOu.jpg");
+    background-size: cover;
+    color: #fff;
+    text-align: center;
+}

@@ -76,7 +76,7 @@ namespace ShaleCo.OnlineQuiz.Web.Models
         public int QuizID { get; set; }
 
         [ForeignKey("QuizID")]
-        public Quiz Quiz { get; set; }
+        public virtual Quiz Quiz { get; set; }
 
         public virtual ICollection<QuizAnswer> Answers { get; set; }
     }
@@ -87,9 +87,9 @@ namespace ShaleCo.OnlineQuiz.Web.Models
         public int QuizAnswerID { get; set; }
         public int? QuestionID { get; set; }
         [ForeignKey("QuestionID")]
-        public Question Question { get; set; }
+        public virtual Question Question { get; set; }
         public int? AnswerID { get; set; }
         [ForeignKey("AnswerID")]
-        public Answer Answer { get; set; }
+        public virtual Answer Answer { get; set; }
     }
 }

@@ -61,8 +61,31 @@ namespace ShaleCo.OnlineQuiz.Web.Models
         public class QuizResults
         {
             public int Score { get; set; }
+            public QuizAttempt QuizAttempt { get; set; }
+        }
+
+        public class QuizDetails
+        {
+            public QuizDetails()
+            {
+                this.Scores = new List<QuizScore>();
+            }
+
+            public double Average { get; set; }
             public Quiz Quiz { get; set; }
-            public QuizAnswers QuizAttempt { get; set; }
+            public IList<QuizScore> Scores { get; set; }
+        }
+
+        public class QuizScore
+        {
+            public QuizScore(string studentName, int score)
+            {
+                this.StudentName = studentName;
+                this.Score = score;
+            }
+
+            public string StudentName { get; set; }
+            public int Score { get; set; }
         }
     }
 }

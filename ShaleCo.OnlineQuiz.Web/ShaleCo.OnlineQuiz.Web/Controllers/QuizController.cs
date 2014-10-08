@@ -71,15 +71,33 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
 
         public ActionResult Results(int id)
         {
-            var quiz = _context.Quizzes.First(e => e.QuizID == id);
             var quizAttempt = _context.QuizAttempts.FirstOrDefault(e => e.QuizID == id && e.StudentName == User.Identity.Name);
 
             var resultsViewModel = new QuizViewModel.QuizResults();
-            resultsViewModel.Score = this.Score(quiz, quizAttempt);
-            resultsViewModel.Quiz = this.MapQuiz(quiz);
-            resultsViewModel.QuizAttempt = this.MapQuizAttempt(quizAttempt);
+            resultsViewModel.Score = this.Score(quizAttempt);
+            resultsViewModel.QuizAttempt = quizAttempt;
 
             return View(resultsViewModel);
+        }
+
+        public ActionResult Details(int id)
+        {
+            var model = new QuizViewModel.QuizDetails();
+            model.Quiz = this.MapQuiz(_context.Quizzes.FirstOrDefault(e => e.QuizID == id));
+
+            var quizAttempts = _context.QuizAttempts.Where(e => e.QuizID == id).ToList();
+
+            var total = 0;
+            foreach(var attempt in quizAttempts)
+            {
+                var score = this.Score(attempt);
+                model.Scores.Add(new QuizViewModel.QuizScore(attempt.StudentName, score));
+                total += score;
+            }
+
+            model.Average = total / (double) model.Scores.Count;
+
+            return View(model);
         }
 
         public ActionResult Create()
@@ -159,13 +177,13 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
             return quizAnswers;
         }
 
-        private int Score(Quiz quiz, QuizAttempt quizAttempt)
+        private int Score(QuizAttempt quizAttempt)
         {
             var correct = 0;
 
             foreach(var answer in quizAttempt.Answers)
             {
-                if(quiz.Questions.First(e => e.QuestionID == answer.QuestionID).CorrectAnswer.AnswerID == answer.AnswerID)
+                if(quizAttempt.Quiz.Questions.First(e => e.QuestionID == answer.QuestionID).CorrectAnswer.AnswerID == answer.AnswerID)
                 {
                     correct++;
                 }

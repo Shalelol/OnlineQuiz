@@ -224,6 +224,7 @@
     <Content Include="Views\Quiz\Index.cshtml" />
     <Content Include="Views\Quiz\Attempt.cshtml" />
     <Content Include="Views\Quiz\Results.cshtml" />
+    <Content Include="Views\Quiz\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
