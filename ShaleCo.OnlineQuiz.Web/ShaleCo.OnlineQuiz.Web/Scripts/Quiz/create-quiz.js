@@ -73,6 +73,12 @@ OnlineQuiz.CreateQuiz = OnlineQuiz.CreateQuiz || function () {
                 AnswerID: null
             };
             quiz.QuizName = $("#quizName").val();
+
+            if (quiz.QuizName == '') {
+                $("#quizAlert").slideDown();
+                return;
+            }
+
             quiz.Questions = [];
             $(".question").each(function () {
                 var $this = $(this);
@@ -103,6 +109,10 @@ OnlineQuiz.CreateQuiz = OnlineQuiz.CreateQuiz || function () {
         bindAddQuestion("#addQuestion");
         bindIncorrectAnswer("#addIncorrectAnswer1");
         bindSaveQuiz("#saveQuiz")
+
+        $("#dismissWarning").click(function () {
+            $("#quizAlert").slideUp();
+        });
     };
 
     return {

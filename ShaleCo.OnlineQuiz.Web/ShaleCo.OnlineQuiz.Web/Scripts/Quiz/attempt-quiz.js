@@ -17,6 +17,13 @@ OnlineQuiz.QuizAttempt = OnlineQuiz.QuizAttempt || function () {
                 Answers : answers
             };
 
+            for(var i = 0; i < quizAnswers.Answers.length; i++) {
+                if (quizAnswers.Answers[i].AnswerID === undefined) {
+                    $("#quizAlert").slideDown();
+                    return;
+                }
+            }
+
             $.ajax({
                 url: "/Quiz/Attempt",
                 type: "POST",
@@ -31,6 +38,10 @@ OnlineQuiz.QuizAttempt = OnlineQuiz.QuizAttempt || function () {
 
     var initialize = function () {
         bindSubmitButton("#submitButton");
+
+        $("#dismissWarning").click(function () {
+            $("#quizAlert").slideUp();
+        });
     };
 
     return {
