@@ -2,3 +2,71 @@
     ViewBag.Title = "Help";
 }
 <h2>Help page</h2>
+
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#accountCreation" data-toggle="tab">Account Creation</a></li>
+    <li><a href="#createQuiz" data-toggle="tab">Quiz Creation</a></li>
+    <li><a href="#attemptQuiz" data-toggle="tab">Quiz Attempt</a></li>
+</ul>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="accountCreation">
+        <br />
+        <p>
+            There are two types of accounts for the users of this system and they are:
+            <ul>
+                <li>
+                    <strong>Teacher accounts:</strong>
+                    <br />
+                    Have the ability to create student accounts, create quizzes and view quiz results of all students they have created.
+                </li>
+                <li>
+                    <strong>Student accounts:</strong>
+                    <br />
+                    Have the ability to attempt quizzes created by their teacher and view their own quiz results.
+                </li>
+            </ul>
+        </p>
+        <p>
+            This help page will show you how to create a student account when you are logged in as a teacher.
+        </p>
+        <ol>
+            <li>Log In using a teachers account.</li>
+            <li>Head to your account management by clicking on "Manage Account" at the top of the page or clicking <a href="/Account/Manage">here</a>.</li>
+            <li>At the bottom of the Manage Account page you will find a "Create new student account" form. If you cannot see this, you are not logged in as a teacher.</li>
+            <li>Enter a student username and password and click create. Your password must be at least 6 characters long.</li>
+            <li>You will see a confirmation message in <span class="text-success">green</span> if the account was created successfully or a failure message in <span class="text-danger">red</span> detailing the reason why the account could not be created.</li>
+        </ol>
+    </div>
+    <div class="tab-pane fade" id="createQuiz">
+        <br />
+        <p>
+            This help page will show you how to create a quiz for your students. You can only create a quiz if you are logged in using a teacher account.
+            <br />
+            Clicking <a href="/Quiz/Create/">here</a> will take you directly to the quiz creation page.
+        </p>
+        <ol>
+            <li>Log In using a teacher account.</li>
+            <li>Head to the Quiz page by clicking on "Quiz" at the top of your page.</li>
+            <li>Click on the blue "Create Quiz" button at the bottom of your quiz list or simply click <a href="/Quiz/Create/">here</a>.</li>
+            <li>Enter a quiz name and create the first question.</li>
+            <li>Add more eustions by clicking on the white "Add Question" button at the bottom of the page.</li>
+            <li>Create more than two possible answers by clicking "Add Incorrect Answer".</li>
+            <li>You may remove incorrect answers by clicking on the "X" to the right of the answer you wish to delete.</li>
+            <li>You may remove questions by clicking on the white "Delete Question" button at the bottom of any of your questions except the first question. This is because your quiz must have at least one question.</li>
+            <li>When you are finished creating your quiz, click the blue "Save Quiz" button at the bottom of the form. You will be redirected to your quiz results page once the quiz has been created in the system.</li>
+        </ol>
+    </div>
+    <div class="tab-pane fade" id="attemptQuiz">
+        <br />
+        <p>This help page will show you how to attempt a quiz created for you by your teacher. You can only attempt a quiz if you are logged in using a student account.</p>
+        <ol>
+            <li>Log In using a student account.</li>
+            <li>Head to the Quiz page by clicking on "Quiz" at the top of your page or by clicking <a href="/Quiz/">here</a>.</li>
+            <li>Find and click on the quiz you wish to attempt in the list of quizzes created by your teacher.</li>
+            <li>If you have already taken the quiz, you will be redirected to the results page of your quiz attempt.</li>
+            <li>Answer all the questions by selecting the answer you believe to be correct.</li>
+            <li>Once you are happy with all your answers, click on the blue "Submit" button at the bottom of the form.</li>
+            <li>You will be redirected to the results page where you may view your score and the answers you selected.</li>
+        </ol>
+    </div>
+</div>
