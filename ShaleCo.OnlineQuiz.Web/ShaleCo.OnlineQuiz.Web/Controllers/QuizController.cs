@@ -41,7 +41,7 @@ namespace ShaleCo.OnlineQuiz.Web.Controllers
 
         public ActionResult Attempt(int id)
         {
-            var attempt = _context.QuizAttempts.FirstOrDefault(e => e.StudentName == User.Identity.Name);
+            var attempt = _context.QuizAttempts.FirstOrDefault(e => e.StudentName == User.Identity.Name && e.QuizID == id);
 
             if(attempt != null)
             {
