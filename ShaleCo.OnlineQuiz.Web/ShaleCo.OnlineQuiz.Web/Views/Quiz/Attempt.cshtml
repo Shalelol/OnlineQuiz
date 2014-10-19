@@ -3,6 +3,8 @@
     ViewBag.Title = "Attempt";
 }
 
+@{var random = new Random();}
+
 <div class="row">
     <div class="page-header" id="@Model.QuizID">
         <h4>@Model.QuizName</h4>
@@ -19,22 +21,39 @@
             <legend>Question @count</legend>
 
             <p>@question.Text</p>
-            <div class="col-lg-6 radio">
-                <label>
-                    <input type="radio" value="@question.CorrectAnswer.AnswerID" name="question @count" />
-                    @question.CorrectAnswer.Text
-                </label>
-            </div>
+            @{
+                var number = random.Next(question.Answers.Count);
+                var answerCount = 0;
+            }
             @foreach (var incorrectAnswer in question.Answers)
             {
+                if (answerCount == number)
+                {
+                    <div class="col-lg-6 radio">
+                        <label>
+                            <input type="radio" value="@question.CorrectAnswer.AnswerID" name="question @count" />
+                            @question.CorrectAnswer.Text
+                        </label>
+                    </div>
+                }
+                
                 <div class="col-lg-6 radio">
                     <label>
                         <input type="radio" value="@incorrectAnswer.AnswerID" name="question @count" />
                         @incorrectAnswer.Text
                     </label>
                 </div>
+                
+                answerCount++;
             }
         </fieldset>
+
+
+
+
+
+
+
     </form>
             <br />
             count++;
